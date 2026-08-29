@@ -1,12 +1,18 @@
 package devBot.backend.controller;
 
-import com.openai.services.blocking.ChatService;
+import devBot.backend.dto.ChatMessageRequest;
+import devBot.backend.dto.ChatMessageResponse;
+import devBot.backend.dto.ChatSessionResponse;
+import devBot.backend.dto.CreateChatSessionRequest;
 import devBot.backend.security.CurrentUser;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -15,7 +21,7 @@ import java.util.UUID;
 public class ChatController {
 
     private final CurrentUser currentUser;
-    private final ChatService chatService;
+    private final devBot.backend.services.ChatService chatService;
 
     @PostMapping("/sessions")
     public ResponseEntity<ChatSessionResponse> createSession(

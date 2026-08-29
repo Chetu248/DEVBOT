@@ -1,7 +1,9 @@
 package devBot.backend.config;
 
 //import com.openai.core.http.HttpMethod;
+import devBot.backend.security.GithubOAuth2UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -44,7 +46,7 @@ public class SecurityConfig {
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .oauth2Login(oauth -> oauth
                         .userInfoEndpoint(userInfo -> userInfo
-                                .userService(gitHubOAuth2UserService))
+                                .userService(githubOAuth2UserService))
                         .successHandler(oauth2SuccessHandler)
                         .failureHandler(oauth2FailureHandler))
                 .logout(logout -> logout

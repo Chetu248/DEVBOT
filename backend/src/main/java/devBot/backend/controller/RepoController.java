@@ -1,4 +1,4 @@
-package devBot.backend.controller ;
+package devBot.backend.controller;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +27,7 @@ public class RepoController {
 
     private final CurrentUser currentUser;
     private final RepoService repoService;
+
     private final IndexingService indexingService;
 
     @GetMapping
