@@ -21,7 +21,7 @@ import java.util.UUID;
 public class ChatController {
 
     private final CurrentUser currentUser;
-    private final devBot.backend.services.ChatService chatService;
+    private final devBot.backend.service.ChatService chatService;
 
     @PostMapping("/sessions")
     public ResponseEntity<ChatSessionResponse> createSession(
