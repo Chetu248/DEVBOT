@@ -1,6 +1,6 @@
-# devPilot
+# DEVBOT
 
-**devPilot** is a full-stack RAG (Retrieval-Augmented Generation) application that lets you **chat with any of your GitHub repositories**. Sign in with GitHub, pick a repo, index it, and ask natural-language questions about the codebase — devPilot retrieves the most relevant code chunks and answers with citations to the exact files and line ranges.
+**DEVBOT** is a full-stack RAG (Retrieval-Augmented Generation) application that lets you **chat with any of your GitHub repositories**. Sign in with GitHub, pick a repo, index it, and ask natural-language questions about the codebase — DEVBOT retrieves the most relevant code chunks and answers with citations to the exact files and line ranges.
 
 ---
 
@@ -20,10 +20,10 @@
 
 ## 🏗️ Architecture
 
-devPilot is a monorepo with two independently deployable apps:
+DEVBOT is a monorepo with two independently deployable apps:
 
 ```
-devPilot/
+DEVBOT/
 ├── backend/   → Java 21 · Spring Boot 4 · Spring AI · Spring Security (OAuth2)
 └── client/    → Next.js 16 · React 19 · TypeScript · Tailwind CSS 4 · shadcn/ui
 ```
@@ -62,7 +62,7 @@ devPilot/
 
 ```
 backend/
-└── src/main/java/devPilot/backend/
+└── src/main/java/DEVBOT/backend/
     ├── config/          # CORS, security, crypto, app-level beans
     ├── controllers/      # REST endpoints (auth, repos, chat)
     ├── dto/               # Request/response payloads
@@ -117,9 +117,9 @@ client/
 Create a Postgres database and enable the required extensions:
 
 ```sql
-CREATE DATABASE devpilot;
+CREATE DATABASE DEVBOT;
 
-\c devpilot
+\c DEVBOT
 
 CREATE EXTENSION IF NOT EXISTS vector;
 CREATE EXTENSION IF NOT EXISTS hstore;
@@ -133,7 +133,7 @@ Create `backend/src/main/resources/application.yml` (or `application.properties`
 ```yaml
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/devpilot
+    url: jdbc:postgresql://localhost:5432/DEVBOT
     username: postgres
     password: postgres
   security:
