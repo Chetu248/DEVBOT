@@ -31,7 +31,7 @@ DEVBOT/
 **Flow:**
 1. User logs in via GitHub OAuth2 (handled entirely by the backend).
 2. Backend syncs the user's repositories from the GitHub REST API.
-3. On request, the backend walks a repo's file tree, filters/chunks the source files, generates embeddings via an OpenAI-compatible embedding model, and stores them in a **pgvector**-backed Postgres table.
+3. On request, the backend walks a repo's file tree, filters/chunks the source files, generates embeddings with Gemini, and stores them in a **pgvector**-backed Postgres table.
 4. When the user asks a question in a chat session, the backend performs a similarity search scoped to that repository, builds a grounded prompt, and streams the LLM's response back to the client over SSE — along with citations pointing to the source files.
 
 ### Backend stack
@@ -39,7 +39,7 @@ DEVBOT/
 |---|---|
 | Framework | Spring Boot 4 (Java 21) |
 | Auth | Spring Security + OAuth2 Client (GitHub provider) |
-| AI / RAG | Spring AI (OpenAI-compatible chat + embedding models) |
+| AI / RAG | Spring AI (Google Gemini chat + embedding models) |
 | Vector store | Spring AI PGVector store |
 | Database | PostgreSQL (`pgvector` extension) + Spring Data JPA |
 | Streaming | Server-Sent Events (`SseEmitter`) |
@@ -110,7 +110,7 @@ client/
 - **Node.js 20+** and npm
 - **PostgreSQL 16+** with the [`pgvector`](https://github.com/pgvector/pgvector) extension available
 - A **GitHub OAuth App** (Client ID + Secret) — set the callback URL to `http://localhost:8080/login/oauth2/code/github`
-- An **OpenAI-compatible API key** (for chat + embedding models)
+- A **Gemini API key** with access to Gemini chat and embedding models
 
 ### 1. Set up the database
 
@@ -144,8 +144,17 @@ spring:
             client-id: ${GITHUB_CLIENT_ID}
             client-secret: ${GITHUB_CLIENT_SECRET}
   ai:
-    openai:
-      api-key: ${OPENAI_API_KEY}
+    google:
+      genai:
+        api-key: ${GEMINI_API_KEY}
+        chat:
+          options:
+            model: gemini-2.5-flash
+        embedding:
+          api-key: ${GEMINI_API_KEY}
+          text:
+            model: gemini-embedding-001
+            dimensions: 1536
 
 app:
   frontend-url: http://localhost:3000
@@ -168,6 +177,8 @@ Run the backend:
 cd backend
 ./mvnw spring-boot:run
 ```
+
+Set `GEMINI_API_KEY`, `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `TOKEN_ENCRYPTOR_PASSWORD`, and `TOKEN_ENCRYPTOR_SALT` in the environment before starting the backend. `TOKEN_ENCRYPTOR_SALT` must be hex-encoded. Do not commit secrets to the repository. Existing repositories indexed with a different embedding provider must be re-indexed after switching to Gemini.
 
 The API will be available at `http://localhost:8080`.
 

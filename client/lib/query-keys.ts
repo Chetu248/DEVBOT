@@ -17,6 +17,28 @@ export type DashboardNavGroup = {
   items: DashboardNavItem[];
 };
 
+const authKeys = ["auth"] as const;
+const reposKeys = ["repos"] as const;
+const chatKeys = ["chat"] as const;
+
+export const queryKeys = {
+  auth: {
+    all: [...authKeys],
+    me: () => [...authKeys, "me"],
+  },
+  repos: {
+    all: [...reposKeys],
+    list: () => [...reposKeys, "list"],
+    detail: (repoId: string) => [...reposKeys, repoId],
+    status: (repoId: string) => [...reposKeys, repoId, "status"],
+  },
+  chat: {
+    all: [...chatKeys],
+    sessions: (repositoryId: string) => [...chatKeys, "sessions", repositoryId],
+    messages: (sessionId: string) => [...chatKeys, "messages", sessionId],
+  },
+} as const;
+
 export const dashboardNavGroups: DashboardNavGroup[] = [
   {
     label: "Workspace",

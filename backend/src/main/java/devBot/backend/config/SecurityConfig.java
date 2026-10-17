@@ -1,6 +1,5 @@
 package devBot.backend.config;
 
-//import com.openai.core.http.HttpMethod;
 import devBot.backend.security.GithubOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
